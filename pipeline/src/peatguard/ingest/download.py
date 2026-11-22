@@ -281,8 +281,10 @@ def download_scenes(
                         )
                     downloaded_paths.append(filepath)
                     continue
-            except Exception:
-                pass
+            except Exception as exc:
+                # Cannot tell whether the scene is already in GCS: report it
+                # and fall through to a fresh download rather than skipping.
+                logger.error("GCS existence check failed for %s: %s", filename, exc)
 
         if catalog is not None:
             catalog.update_scene_status(scene_id, ProcessingStatus.DOWNLOADING)
