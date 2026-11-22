@@ -94,6 +94,10 @@ class ProcessingConfig(BaseModel):
     goldstein_alpha: float = 0.8
     snaphu_cost_mode: str = "DEFO"
     do_ion: bool = True  # Ionospheric correction via split-spectrum (recommended for equatorial)
+    # Fraction of SBAS pairs that must succeed for the InSAR stage to pass.
+    # Default 1.0: a partial network fails the stage unless a lower floor is
+    # set explicitly, because dropped pairs silently change the inversion.
+    min_pair_success_fraction: float = Field(default=1.0, ge=0.0, le=1.0)
 
 
 class ClassificationConfig(BaseModel):
